@@ -1,8 +1,8 @@
 ---
 name: commit
 version: 1.0.0
-description: 브랜치명에서 이슈 키를 파싱하여 한국어 커밋 메시지로 Git 커밋. 커밋 전 lint/test pre-check, 민감 파일 감지 포함
-argument-hint: [이슈키] [커밋 메시지]
+description: 브랜치 타입 기반 한국어 커밋 메시지로 Git 커밋. 커밋 전 lint/test pre-check, 민감 파일 감지 포함
+argument-hint: [커밋 메시지]
 allowed-tools:
   # git - 커밋 핵심
   - Bash(git rev-parse:*)
@@ -29,12 +29,11 @@ allowed-tools:
   - AskUserQuestion
 ---
 
-변경사항을 스테이징하고, 브랜치명에서 이슈 키를 파싱하여 한국어 커밋 메시지로 커밋한다.
+변경사항을 스테이징하고, 브랜치명에서 타입을 파싱하여 `{type}: 한국어 메시지` 형식으로 커밋한다.
 
 Arguments:
-- 인자 없음: 이슈 키는 브랜치에서 파싱, 메시지는 변경 내용에서 자동 생성
-- ARGS[0]만: 커밋 메시지로 사용. 이슈 키는 브랜치에서 파싱
-- ARGS[0] + ARGS[1]: ARGS[0]은 이슈 키 (`^[A-Z]+-[0-9]+$` 매칭 필수, 불일치 시 에러), ARGS[1]은 커밋 메시지
+- 인자 없음: 타입은 브랜치에서 파싱, 메시지는 변경 내용에서 자동 생성
+- ARGS[0]만: 커밋 메시지로 사용. 타입은 브랜치에서 파싱
 
 ## 사전 확인
 
@@ -51,9 +50,13 @@ Arguments:
   - Test 실패 시 커밋을 중단하고 사용자에게 보고.
   - 타임아웃: lint/test Bash 명령에 `timeout: 300000` (5분) 파라미터를 설정한다. 초과 시 해당 단계를 건너뛰고 사용자에게 보고.
 
-## 이슈 키 파싱
+## 타입 파싱
 
-`.claude/rules/issue-key.md` 규칙을 따른다. 이슈 키 정규식은 `.claude/config.json`의 `issueKey.pattern`을 참조한다.
+브랜치명에서 타입을 추출한다:
+1. `git branch --show-current`로 브랜치명 확인
+2. 첫 번째 `/` 앞의 세그먼트를 타입으로 사용 (예: `feat/login` → `feat`)
+3. 허용 타입: `.claude/config.json` → `conventions.branchTypes` 참조
+4. 브랜치명에서 타입을 추출할 수 없으면 (main, develop 등): AskUserQuestion으로 타입을 선택받는다
 
 ## 커밋 메시지 생성
 
@@ -63,14 +66,13 @@ Arguments:
 3. 어떤 파일이 수정/추가/삭제되었는지 파악
 
 **메시지 구조**:
-- **제목 (첫 줄)**: 변경의 핵심을 한국어로 요약. 40자 이내.
-  - 이슈 키 있으면: `[ISSUE-KEY] 메시지`
-  - 이슈 키 없으면: `메시지`
+- **제목 (첫 줄)**: `{type}: {한국어 요약}`. 50자 이내.
+  - 예: `feat: 로그인 기능 추가`
 - **본문 (빈 줄 이후)**: 구체적 변경사항을 `-` bullet으로 나열
 
 예시:
 ```
-[JIRA-123] 로그인 기능 추가
+feat: 로그인 기능 추가
 
 - 로그인 API 엔드포인트 구현
 - JWT 토큰 발급 로직 추가
@@ -90,7 +92,7 @@ Arguments:
 6. HEREDOC 포맷으로 커밋:
    ```bash
    git commit -m "$(cat <<'EOF'
-   [ISSUE-KEY] 제목
+   {type}: 제목
 
    - 변경사항 1
    - 변경사항 2

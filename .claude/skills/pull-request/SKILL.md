@@ -58,9 +58,13 @@ git remote get-url origin
 ```
 - URL에 `github.com` 포함 → 기본값 (GH_HOST 불필요)
 
-## 이슈 키 파싱
+## 타입 파싱
 
-`.claude/rules/issue-key.md` 규칙을 따른다. 이슈 키 정규식은 `.claude/config.json`의 `issueKey.pattern`을 참조한다.
+브랜치명에서 타입을 추출한다:
+1. `git branch --show-current`로 브랜치명 확인
+2. 첫 번째 `/` 앞의 세그먼트를 타입으로 사용 (예: `feat/login` → `feat`)
+3. `.claude/config.json` → `conventions.prTitleMapping`에서 대문자 매핑을 조회한다
+4. 매핑 예: `feat`→`FEATURE`, `fix`→`BUGFIX`, `refactor`→`REFACTOR`, `chore`→`CHORE`, `docs`→`DOCS`
 
 ## PR 제목 생성
 
@@ -68,10 +72,13 @@ git remote get-url origin
 git log <base-branch>..HEAD --oneline -n 50
 ```
 
-- 커밋 1개: 해당 커밋 제목을 PR 제목으로 사용
+- 커밋 1개: 해당 커밋 내용을 기반으로 PR 제목 생성
 - 커밋 여러 개: 전체 변경을 한국어로 요약
 - 커밋 50개 초과: `--oneline` 요약만으로 제목 생성
-- 포맷: `[ISSUE-KEY] 제목` (이슈 키 있을 때) 또는 `제목`
+- 포맷: `[{TYPE}] 설명을 ~한다.` (대괄호 타입 + 서술형 한국어 문장)
+  - 예: `[FEATURE] 로그인 기능을 구현한다.`
+  - 예: `[BUGFIX] 인증 토큰 만료 오류를 수정한다.`
+  - 예: `[REFACTOR] API 응답 구조를 개선한다.`
 - 50자 이내
 
 ## PR 본문 생성
