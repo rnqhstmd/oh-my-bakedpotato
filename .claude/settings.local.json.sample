@@ -1,0 +1,21 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git:*)",
+      "Bash(gh auth:*)",
+      "Bash(gh repo:*)",
+      "Bash(gh pr:*)",
+      "Bash(./gradlew:*)",
+      "Bash(docker:*)",
+      "Bash(docker-compose:*)",
+      "Bash(grep:*)",
+      "Bash(ls:*)",
+      "Bash(command:*)",
+      "Skill(worktree)",
+      "Skill(dev)",
+      "Skill(commit)",
+      "WebSearch"
+    ]
+  },
+  "enableAllProjectMcpServers": true
+}
