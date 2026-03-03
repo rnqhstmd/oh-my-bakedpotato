@@ -1,16 +1,13 @@
 # phase-complete: 완료
 
 각 단계가 실패하면 사용자에게 보고하고 진행 여부를 확인한다.
-서브 스킬의 명령을 실행할 때: git 명령에는 `GIT_PREFIX`를, 빌드/린트/테스트 명령(`./gradlew`, `npm`, `pytest` 등)은 `PROJECT_ROOT` 디렉토리에서 실행한다.
-
-**독립 스킬 실행 컨텍스트**: commit, pull-request 등 독립 스킬은 `GIT_PREFIX`를 인지하지 못한다. 이 스킬들의 git/빌드 명령이 올바른 저장소에서 실행되도록, 스킬 프로세스의 모든 Bash 명령을 `PROJECT_ROOT` 서브셸 안에서 실행한다: `(cd ${PROJECT_ROOT} && <명령>)`. 공유 규칙의 "빌드 명령 실행 규칙"과 동일한 원칙이며, git 명령에도 적용한다.
 
 ## 5.1 인수 검증 (ProductOwner)
 PRD가 없으면 이 단계를 건너뛴다.
 
-PRD가 있으면 (`${PROJECT_ROOT}/.dev/prd.md`), product-owner에게 인수 검증을 요청한다.
+PRD가 있으면 (`.dev/prd.md`), product-owner에게 인수 검증을 요청한다.
 
-**diff 갱신**: phase-review 이후 coder 수정이 있었을 수 있으므로, `${GIT_PREFIX} add -A`로 스테이징한 후 **Diff 수집 규칙**에 따라 diff를 `DIFF_FILE`에 리다이렉트하여 갱신한다.
+**diff 갱신**: phase-review 이후 coder 수정이 있었을 수 있으므로, `git add -A`로 스테이징한 후 **Diff 수집 규칙**에 따라 diff를 `DIFF_FILE`에 리다이렉트하여 갱신한다.
 
 `Task(subagent_type="product-owner")` — prompt에 다음을 포함:
 - PRD의 "요구사항" + "수용 기준" (Context Slicing 규칙 참조)
@@ -40,7 +37,7 @@ PRD가 있으면 (`${PROJECT_ROOT}/.dev/prd.md`), product-owner에게 인수 검
 1. **비즈니스 맥락 조립**: pull-request이 PR 본문을 생성할 때, 오케스트레이터가 다음을 "비즈니스 맥락"으로 함께 전달한다:
    - PRD의 "배경"과 "요구사항", 설계서의 "배경 및 목적". `--hotfix`이면 ARGS[0]을 사용.
    - pull-request의 Background/Requirements 섹션에 이 내용이 반영된다.
-2. **Trust Ledger 요약 삽입**: `${PROJECT_ROOT}/.dev/trust-ledger.md`가 존재하면 Read하여, pull-request이 생성하는 PR 본문의 Checklist 앞에 `## Audit Summary` 섹션을 추가한다:
+2. **Trust Ledger 요약 삽입**: `.dev/trust-ledger.md`가 존재하면 Read하여, pull-request이 생성하는 PR 본문의 Checklist 앞에 `## Audit Summary` 섹션을 추가한다:
    ```
    ## Audit Summary
    - 총 N건 (CRITICAL: n, HIGH: n, MEDIUM: n)
@@ -81,16 +78,11 @@ PRD와 설계서에서 context 갱신 후보를 추출하여 사용자에게 제
 **임의 반영 금지**: 사용자 승인 없이 context 문서를 수정하지 않는다.
 
 ## 5.6 진행 상태 완료
-`${PROJECT_ROOT}/.dev/state.md`의 `status`를 `completed`, `phases.complete`를 `completed`로 갱신한다.
+`.dev/state.md`의 `status`를 `completed`, `phases.complete`를 `completed`로 갱신한다.
 
 ## 5.7 다음 단계
 
 PR이 생성되었으면 완료이다. **PR 머지는 절대 실행하지 않는다** — 머지는 리뷰어가 직접 수행한다.
 
 리뷰 수정 요청에 대비하여 작업환경 유지를 안내한다:
-
-**워크스페이스 모드** (`PROJECT_ROOT`가 `worktrees/` 하위인 경우):
-"리뷰 피드백 대응을 위해 워크트리를 유지합니다. 리뷰 완료 후 `/worktree done`으로 정리하세요."
-
-**일반 모드** (브랜치만 사용 시):
 "리뷰 피드백 대응을 위해 현재 브랜치를 유지합니다. 리뷰 완료 후 베이스 브랜치로 전환하세요."

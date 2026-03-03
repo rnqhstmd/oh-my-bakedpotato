@@ -39,17 +39,5 @@
     "researcher": { "maxInputLines": 1000, "note": "조사 요청 + 코드 맵" },
     "hacker": { "maxInputLines": 800, "note": "정체 상황 + 코드 맵" },
     "simplifier": { "maxInputLines": 1000, "note": "정체 상황 + 설계서 + PRD + 코드 맵" }
-  },
-  "workspace": {
-    "structure": {
-      "main": "main/",
-      "worktrees": "worktrees/",
-      "projectsDir": "projects/"
-    },
-    "envFiles": [
-      ".env",
-      ".env.local",
-      ".env.development"
-    ]
   }
 }

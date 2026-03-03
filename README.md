@@ -61,7 +61,7 @@ Claude Code 실행 후:
 /setup
 ```
 
-OS에 맞는 설치 안내, GH 인증, 프로젝트 clone을 자동으로 처리합니다.
+OS에 맞는 설치 안내와 GH 인증을 자동으로 처리합니다.
 
 ---
 
@@ -128,35 +128,28 @@ oh-my-bakedpotato/
 │
 ├── .claude/
 │   ├── config.json        ← 이슈 키 패턴, 타임아웃 등 설정
-│   ├── workspace.json     ← 워크스페이스 설정 (팀, GH, 프로젝트 목록)
 │   ├── settings.json      ← 팀 공유 권한/훅 설정
 │   ├── agents/            ← 에이전트 정의 (9종)
 │   ├── rules/             ← 행동 규칙 (자동 로드)
 │   ├── hooks/             ← 안전장치 (보호 브랜치 커밋 차단 등)
 │   └── skills/            ← 스킬 정의
 │
-├── context/               ← 도메인 지식 (누적 자산)
-│   ├── README.md          ← 도메인 목록 인덱스
-│   ├── glossary.md        ← 공통 용어 사전
-│   └── {도메인}/           ← 도메인별 컨텍스트
-│
-└── projects/              ← 코드 레포 (.gitignore 대상)
-    └── {name}/
-        ├── main/          ← 기본 브랜치 (읽기 전용)
-        └── worktrees/     ← 기능별 작업 브랜치
+└── context/               ← 도메인 지식 (예시, 소비 프로젝트에서 /new-context로 생성)
+    ├── README.md          ← 도메인 목록 인덱스
+    ├── glossary.md        ← 공통 용어 사전
+    └── {도메인}/           ← 도메인별 컨텍스트
 ```
 
 ## 스킬 목록
 
 | 스킬 | 설명 |
 |------|------|
-| `/setup` | 초기 세팅 (도구 확인, GH 인증, 프로젝트 clone) |
-| `/sync-projects` | GH 레포 clone 및 최신화 |
+| `/setup` | 초기 세팅 (도구 확인, GH 인증) |
 | `/new-context` | 새 도메인 컨텍스트 생성 |
 | `/dev` | PRD → 설계 → 구현 → 리뷰 → 커밋/PR 전체 사이클 |
 | `/commit` | 한국어 커밋 메시지로 Git 커밋 |
 | `/pull-request` | 커밋 히스토리 기반 PR 자동 생성 |
-| `/worktree` | projects/ 코드 레포의 Git worktree 자동화 |
+| `/worktree` | 표준 Git worktree 관리 |
 | `/lens` | 코드 속 비즈니스 정책 탐지 → PO/PD 보고서 |
 | `/humanizer` | AI 글쓰기 패턴 감지 및 교정 |
 

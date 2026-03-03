@@ -1,10 +1,10 @@
 ---
 name: setup
-version: 2.0.0
+version: 3.0.0
 argument-hint: "없음"
 description: |
-  Command Center 워크스페이스 초기 세팅.
-  필수 도구 확인, GH 인증, 프로젝트 clone을 단계별로 수행합니다.
+  플러그인 초기 설정.
+  필수 도구 확인, GH 인증을 단계별로 수행합니다.
 allowed-tools:
   - "Bash(curl *)"
   - "Bash(brew *)"
@@ -25,13 +25,7 @@ allowed-tools:
 
 # setup
 
-Command Center 워크스페이스 초기 세팅을 단계별로 수행한다.
-
-## 설정 파일
-
-워크스페이스 루트의 `.claude/workspace.json`에서 설정을 읽는다.
-
-워크스페이스 루트 감지: 현재 디렉토리 또는 상위에서 `.claude/workspace.json`이 있는 디렉토리를 찾는다.
+플러그인 초기 설정을 단계별로 수행한다.
 
 ## 실행 절차
 
@@ -68,16 +62,16 @@ Command Center 워크스페이스 초기 세팅을 단계별로 수행한다.
 
 ### 2단계: GH 인증
 
-1. `.claude/workspace.json`에서 `gh_host` 값을 읽는다.
-2. `gh auth status --hostname {gh_host}` 로 인증 상태 확인
-3. 인증됨 → `GH 인증 ({gh_host}) : 완료 ✅` 출력
-4. 미인증 → `gh auth login --hostname {gh_host}` 실행 (`timeout: 120000`). 브라우저 인증을 안내.
+1. `gh auth status` 로 인증 상태 확인
+2. 인증됨 → `GH 인증 : 완료 ✅` 출력
+3. 미인증 → `gh auth login` 실행 (`timeout: 120000`). 브라우저 인증을 안내.
 
-### 3단계: 프로젝트 clone
+### 3단계: context/ 초기 구조 안내
 
-1. `.claude/workspace.json`에서 `projects` 객체를 읽는다.
-2. projects가 비어있으면 → "등록된 프로젝트가 없습니다. workspace.json에 프로젝트를 추가하거나 `/sync-projects`를 사용하세요." 출력 후 건너뜀.
-3. projects가 있으면 각 프로젝트에 대해 clone 또는 확인.
+프로젝트 루트에 `context/` 디렉토리가 없으면:
+- "도메인 지식을 관리하려면 `/new-context`로 context/ 디렉토리를 생성하세요." 안내
+
+이미 있으면 건너뛴다.
 
 ### 완료
 
