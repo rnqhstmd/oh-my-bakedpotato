@@ -14,3 +14,26 @@
 | BaseEntity | 모든 JPA 엔티티의 부모. id, createdAt, updatedAt, deletedAt 자동 관리 |
 | ApiResponse | 통합 API 응답 래퍼. meta(result, errorCode, message) + data |
 | Spotless | Gradle 코드 포맷터 플러그인. 네이버 코딩 컨벤션 적용 |
+
+## 네이밍 규칙
+
+### 도메인 엔티티
+
+도메인 엔티티 클래스는 **도메인 이름 그대로** 짓는다. `Model`, `Entity` 등의 접미사를 붙이지 않는다.
+
+| O (올바른 예) | X (잘못된 예) |
+|--------------|-------------|
+| `User` | `UserModel`, `UserEntity` |
+| `Order` | `OrderModel`, `OrderEntity` |
+| `Payment` | `PaymentModel`, `PaymentEntity` |
+
+### 레이어별 클래스 네이밍
+
+| 레이어 | 패턴 | 예시 |
+|--------|------|------|
+| domain | `{이름}` | `User`, `Order` |
+| domain (repository) | `{이름}Repository` | `UserRepository` |
+| application (service) | `{이름}Service` | `UserService` |
+| application (facade) | `{이름}Facade` | `UserFacade` |
+| interfaces (controller) | `{이름}Controller` | `UserController` |
+| interfaces (DTO) | `{이름}Request`, `{이름}Response` | `UserCreateRequest`, `UserResponse` |
