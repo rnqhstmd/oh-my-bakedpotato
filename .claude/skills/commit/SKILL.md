@@ -1,7 +1,7 @@
 ---
 name: commit
 version: 1.0.0
-description: 브랜치 타입 기반 한국어 커밋 메시지로 Git 커밋. 커밋 전 lint/test pre-check, 민감 파일 감지 포함
+description: 브랜치 타입 기반 한국어 커밋 메시지로 Git 커밋. 커밋 전 test pre-check, 민감 파일 감지 포함
 argument-hint: [커밋 메시지]
 allowed-tools:
   # git - 커밋 핵심
@@ -12,9 +12,9 @@ allowed-tools:
   - Bash(git commit:*)
   - Bash(git show:*)
   - Bash(git branch:*)
-  # lint/test - 커밋 전 pre-check
+  # test - 커밋 전 pre-check
   - Bash(./gradlew:*)
-  # 도구 존재 확인 - lint/test 내부 pre-check용
+  # 도구 존재 확인 - test 내부 pre-check용
   - Bash(which:*)
   - Bash(test:*)
   # git - 에러 복구, 이력 참고, 빌드 아티팩트 tracking 해제
@@ -40,15 +40,13 @@ Arguments:
 - Git 저장소인지 확인
 - **작업 디렉토리 보정**: `git rev-parse --show-toplevel`로 Git 루트를 확인한다. 현재 디렉토리와 다르면 (워크스페이스 root에서 호출된 경우 등), 이후 모든 git/빌드 명령을 Git 루트 기준 서브셸 `(cd <git-root> && <명령>)`로 실행한다.
 - 커밋할 변경사항이 있는지 확인 (없으면: "커밋할 변경사항이 없습니다.")
-- 커밋 전에 lint와 test를 실행한다:
+- 커밋 전에 test를 실행한다:
   - 프로젝트 타입 감지 (빌드/설정 파일 기준):
-    | 파일 | 린트 | 테스트 |
-    |------|------|--------|
-    | `build.gradle.kts` / `build.gradle` | `./gradlew spotlessApply` | `./gradlew test` |
-  - Spotless 태스크 존재 확인: `./gradlew tasks --all 2>/dev/null | grep spotless`. 없으면 린트를 건너뛴다.
-  - Lint 포맷팅 변경은 커밋에 포함.
+    | 파일 | 테스트 |
+    |------|--------|
+    | `build.gradle.kts` / `build.gradle` | `./gradlew test` |
   - Test 실패 시 커밋을 중단하고 사용자에게 보고.
-  - 타임아웃: lint/test Bash 명령에 `timeout: 300000` (5분) 파라미터를 설정한다. 초과 시 해당 단계를 건너뛰고 사용자에게 보고.
+  - 타임아웃: test Bash 명령에 `timeout: 300000` (5분) 파라미터를 설정한다. 초과 시 해당 단계를 건너뛰고 사용자에게 보고.
 
 ## 타입 파싱
 
