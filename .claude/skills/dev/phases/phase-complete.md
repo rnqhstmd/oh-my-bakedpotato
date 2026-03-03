@@ -24,7 +24,7 @@ PRD가 있으면 (`.dev/prd.md`), product-owner에게 인수 검증을 요청한
 위 5.1 진입 조건에 의해 PRD 부재 또는 `--hotfix` 모드이면 이 단계 전체가 건너뛰어진다.
 
 ## 5.2 Commit
-`commit` 스킬을 Read하여 프로세스를 실행한다 (lint → test → commit 일괄).
+`commit` 스킬을 Read하여 프로세스를 실행한다 (test → commit 일괄).
 
 **test 실패 시 자동 수정 (1회):**
 1. commit이 test 실패로 중단하면, 실패 로그와 코드 맵, PROJECT_ROOT를 `Task(subagent_type="coder")`에 전달하여 수정 요청.

@@ -31,7 +31,6 @@
     ".gradle/"
   ],
   "timeouts": {
-    "lint": 300000,
     "test": 300000,
     "build": 300000,
     "network": 120000,
@@ -40,7 +39,6 @@
   "projectTypes": {
     "java-spring": {
       "detect": ["build.gradle.kts", "build.gradle"],
-      "lint": "./gradlew spotlessApply",
       "test": "./gradlew test",
       "build": "./gradlew build"
     }
