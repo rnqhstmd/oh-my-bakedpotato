@@ -12,7 +12,7 @@ Claude Code의 Plugin Marketplace를 통해 설치합니다:
 
 ```bash
 # 1. 마켓플레이스에 추가
-/plugin marketplace add bs-koo/oh-my-bakedpotato
+/plugin marketplace add rnqhstmd/oh-my-bakedpotato
 
 # 2. 플러그인 설치
 /plugin install oh-my-bakedpotato --scope user
