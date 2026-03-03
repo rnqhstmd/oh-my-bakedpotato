@@ -69,8 +69,10 @@ project-root/           ← 메인 작업 디렉토리
 
 1. git repo 확인
 2. **브랜치명 검증**:
-   - `.claude/rules/issue-key.md` 규칙을 따른다. 이슈 키 정규식은 `.claude/config.json`의 `issueKey.pattern`을 참조한다.
-   - 이슈 키가 없으면 AskUserQuestion으로 이슈 키를 입력받는다
+   - 형식: `{type}/{description}` (예: `feat/login`, `fix/auth-bug`, `refactor/api-cleanup`)
+   - 허용 타입: `.claude/config.json` → `conventions.branchTypes` 참조 (`feat`, `fix`, `refactor`, `chore`, `docs`, `test`, `style`, `perf`, `ci`)
+   - 사용자가 타입 없이 이름만 제공하면 AskUserQuestion으로 타입을 선택받는다
+   - description은 영문 소문자 + 하이픈 (`kebab-case`) 권장
    - **Claude가 브랜치명을 임의로 생성하지 않는다** — 반드시 사용자가 지정하거나 확인해야 한다
 3. 브랜치 중복 체크 (중복 시: 기존 사용 / 다른 이름 / 기존 삭제 중 선택)
 4. `git worktree add .worktrees/<name> -b <name>`
@@ -128,18 +130,25 @@ project-root/           ← 메인 작업 디렉토리
 ## 예시
 
 ```
-User: /worktree create JIRA-123/login-feature
+User: /worktree create feat/login
 
 Claude: 워크트리 생성 완료.
-  브랜치: JIRA-123/login-feature
-  경로:   .worktrees/JIRA-123/login-feature/
+  브랜치: feat/login
+  경로:   .worktrees/feat/login/
   기반:   main (abc1234)
+
+User: /worktree create login
+Claude: 브랜치 타입을 선택해주세요. → [feat / fix / refactor / ...]
+User: feat
+Claude: 워크트리 생성 완료.
+  브랜치: feat/login
+  경로:   .worktrees/feat/login/
 
 User: /worktree list
 
 Claude: 워크트리 목록:
-  /path/to/project           abc1234 [main]
-  /path/to/.worktrees/JIRA-123/login-feature  def5678 [JIRA-123/login-feature]
+  /path/to/project                      abc1234 [main]
+  /path/to/.worktrees/feat/login        def5678 [feat/login]
 
 User: /worktree done
 

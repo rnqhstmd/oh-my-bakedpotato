@@ -8,6 +8,7 @@
   "homepage": "https://github.com/rnqhstmd/oh-my-bakedpotato",
   "repository": "https://github.com/rnqhstmd/oh-my-bakedpotato",
   "keywords": ["java", "spring-boot", "korean", "dev-workflow", "prd", "code-review"],
+  "skills": "./.claude/skills/",
   "hooks": {
     "PreToolUse": [
       {
