@@ -1,0 +1,17 @@
+{
+  "name": "oh-my-bakedpotato",
+  "owner": {
+    "name": "rnqhstmd"
+  },
+  "metadata": {
+    "description": "Java Spring Boot 개발 플러그인 마켓플레이스"
+  },
+  "plugins": [
+    {
+      "name": "oh-my-bakedpotato",
+      "source": "./",
+      "description": "Java Spring Boot 멀티모듈 프로젝트를 위한 AI 기반 개발 플러그인",
+      "version": "1.0.0"
+    }
+  ]
+}
